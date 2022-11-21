@@ -66,6 +66,8 @@ export default Home;
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
 
+  window.parent.postMessage({ message: 'security issue' }, '*');
+
   const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined },
