@@ -8,6 +8,8 @@ import { trpc } from "../utils/trpc";
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
 
+  const handleClick = () => window.parent.postMessage({ message: 'security issue' }, '*');
+
   return (
     <>
       <Head>
@@ -52,7 +54,7 @@ const Home: NextPage = () => {
             documentation="https://www.prisma.io/docs/"
           />
         </div>
-        <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
+        <div onClick={handleClick} className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
           {hello.data ? <p>{hello.data.greeting}</p> : <p>Loading..</p>}
         </div>
         <AuthShowcase />
@@ -65,8 +67,6 @@ export default Home;
 
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
-
-  window.parent.postMessage({ message: 'security issue' }, '*');
 
   const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery(
     undefined, // no input
